@@ -203,9 +203,9 @@ void CLogger::setFileName(const char *filename, bool flag, bool open_wf)
     return;
 }
 
-void CLogger::rotateLog(const char *filename, const char *fmt) 
+void CLogger::rotateLog(const char *filename, const char *fmt)
 {
-    if (filename == NULL && _name != NULL) 
+    if (filename == NULL && _name != NULL)
     {
         filename = _name;
     }
@@ -214,7 +214,7 @@ void CLogger::rotateLog(const char *filename, const char *fmt)
     {
       snprintf(wf_filename, sizeof(wf_filename), "%s.wf", filename);
     }
-    if (access(filename, R_OK) == 0) 
+    if (access(filename, R_OK) == 0)
     {
         char oldLogFile[256];
         char old_wf_log_file[256];
@@ -222,14 +222,14 @@ void CLogger::rotateLog(const char *filename, const char *fmt)
         time(&t);
         struct tm tm;
         localtime_r((const time_t*)&t, &tm);
-        if (fmt != NULL) 
+        if (fmt != NULL)
         {
             char tmptime[256];
             strftime(tmptime, sizeof(tmptime), fmt, &tm);
             sprintf(oldLogFile, "%s.%s", filename, tmptime);
             snprintf(old_wf_log_file, sizeof(old_wf_log_file), "%s.%s", wf_filename, tmptime);
         }
-        else 
+        else
         {
             sprintf(oldLogFile, "%s.%04d%02d%02d%02d%02d%02d",
                 filename, tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
@@ -238,10 +238,10 @@ void CLogger::rotateLog(const char *filename, const char *fmt)
               wf_filename, tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
               tm.tm_hour, tm.tm_min, tm.tm_sec);
         }
-        if ( _maxFileIndex > 0 ) 
+        if ( _maxFileIndex > 0 )
         {
             pthread_mutex_lock(&_fileIndexMutex);
-            if ( _fileList.size() >= _maxFileIndex ) 
+            if ( _fileList.size() >= _maxFileIndex )
             {
                 std::string oldFile = _fileList.front();
                 _fileList.pop_front();
@@ -251,7 +251,7 @@ void CLogger::rotateLog(const char *filename, const char *fmt)
             pthread_mutex_unlock(&_fileIndexMutex);
         }
         rename(filename, oldLogFile);
-        if (_wf_flag && _maxFileIndex > 0) 
+        if (_wf_flag && _maxFileIndex > 0)
         {
           pthread_mutex_lock(&_fileIndexMutex);
           if (_wf_file_list.size() >= _maxFileIndex)
@@ -320,7 +320,7 @@ void CLogger::checkFile()
     }
 }
 
-CLogger::CLogger& CLogger::getLogger()
+CLogger& CLogger::getLogger()
 {
   static CLogger logger;
   return logger;
